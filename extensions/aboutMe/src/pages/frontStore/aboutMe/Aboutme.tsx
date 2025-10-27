@@ -128,7 +128,7 @@ export default function AboutMe() {
                         duration: 3,
                         text: 'Building scalable web applications and AI-powered experiences.',
                         ease: 'none',
-                        delay: 8,
+                        delay: 6.8,
                     });
                 }
             }
