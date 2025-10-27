@@ -1,0 +1,34 @@
+{
+  "shop": {
+    "language": "en",
+    "currency": "USD"
+  },
+  "system": {
+    "extensions": [
+      {
+        "name": "product_review",
+        "resolve": "node_modules/@evershop/product_review",
+        "enabled": true,
+        "priority": 10
+      },
+      {
+        "name": "sample",
+        "resolve": "extensions/sample",
+        "enabled": true
+      },
+      {
+        "name": "aboutMe",
+        "resolve": "extensions/aboutMe",
+        "enabled": true,
+        "priority": 10
+      },
+      {
+        "name": "google_login",
+        "resolve": "node_modules/@evershop/google_login",
+        "enabled": true,
+        "priority": 10
+      }
+    ],
+    "theme": "sample"
+  }
+}
