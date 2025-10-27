@@ -2,12 +2,17 @@ import React, { useEffect, useRef } from 'react';
 import { animate, stagger, splitText } from 'animejs';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { TextPlugin } from 'gsap/TextPlugin';
+gsap.registerPlugin(TextPlugin, ScrollTrigger);
+
 
 // Register GSAP plugin
-gsap.registerPlugin(ScrollTrigger);
 
 export default function AboutMe() {
     const containerRef = useRef<HTMLDivElement>(null);
+    const nameRef = useRef<HTMLHeadingElement>(null);
+    const titleRef = useRef<HTMLParagraphElement>(null);
+    const bioRef = useRef<HTMLParagraphElement>(null);
 
     useEffect(() => {
         // Initialize Anime.js animation for header text
@@ -78,6 +83,55 @@ export default function AboutMe() {
                     }
                 );
             });
+
+            // TextPlugin animations for hero section
+            // Animation for name (Minh Lê)
+            if (nameRef.current) {
+                gsap.set(nameRef.current, { text: '' });
+                gsap.to(nameRef.current, {
+                    duration: 0.8,
+                    text: 'Minh Lê',
+                    ease: 'none',
+                    delay: 0.5,
+                });
+            }
+
+            // Animation for title
+            if (titleRef.current) {
+                gsap.set(titleRef.current, { text: '' });
+                gsap.to(titleRef.current, {
+                    duration: 2.5,
+                    text: 'Full-Stack Developer / Software Engineer',
+                    ease: 'none',
+                    delay: 1.3,
+                });
+            }
+
+            // Animation for bio - line 1
+            if (bioRef.current) {
+                const bioLine1 = bioRef.current.querySelector('.bio-line-1');
+                const bioLine2 = bioRef.current.querySelector('.bio-line-2');
+                
+                if (bioLine1) {
+                    gsap.set(bioLine1, { text: '' });
+                    gsap.to(bioLine1, {
+                        duration: 3,
+                        text: 'Passionate developer crafting elegant solutions with modern technologies.',
+                        ease: 'none',
+                        delay: 3.8,
+                    });
+                }
+
+                if (bioLine2) {
+                    gsap.set(bioLine2, { text: '' });
+                    gsap.to(bioLine2, {
+                        duration: 3,
+                        text: 'Building scalable web applications and AI-powered experiences.',
+                        ease: 'none',
+                        delay: 8,
+                    });
+                }
+            }
         }
 
         // Cleanup function
@@ -157,12 +211,12 @@ export default function AboutMe() {
                         <span style={styles.avatarText}>ML</span>
                     </div>
                 </div>
-                <h1 style={styles.name}>Minh Lê</h1>
-                <p style={styles.title}>Full-Stack Developer / Software Engineer</p>
-                <p style={styles.bio}>
-                    Passionate developer crafting elegant solutions with modern technologies.
+                <h1 ref={nameRef} style={styles.name}></h1>
+                <p ref={titleRef} style={styles.title}></p>
+                <p ref={bioRef} style={styles.bio}>
+                    <span className="bio-line-1"></span>
                     <br />
-                    Building scalable web applications and AI-powered experiences.
+                    <span className="bio-line-2"></span>
                 </p>
             </section>
 
