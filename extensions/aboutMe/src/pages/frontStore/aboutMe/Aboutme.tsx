@@ -1,9 +1,16 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { animate, stagger, splitText } from 'animejs';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+// Register GSAP plugin
+gsap.registerPlugin(ScrollTrigger);
 
 export default function AboutMe() {
+    const containerRef = useRef<HTMLDivElement>(null);
+
     useEffect(() => {
-        // Initialize animation when component mounts
+        // Initialize Anime.js animation for header text
         const { chars } = splitText('#animation-test h2', { words: false, chars: true });
 
         animate(chars, {
@@ -22,11 +29,66 @@ export default function AboutMe() {
             loopDelay: 1000,
             loop: true
         });
+
+        // GSAP ScrollTrigger Animation for entire page
+        if (containerRef.current) {
+            // Set initial state - hide entire container
+            gsap.set(containerRef.current, {
+                opacity: 0,
+                y: 50
+            });
+
+            // Animate entire page on scroll
+            gsap.to(containerRef.current, {
+                opacity: 1,
+                y: 0,
+                duration: 1.2,
+                ease: 'power3.out',
+                scrollTrigger: {
+                    trigger: containerRef.current,
+                    start: 'top 80%',
+                    end: 'top 20%',
+                    toggleActions: 'play none none reverse',
+                    scrub: 1,
+                    // markers: true, // Uncomment for debugging
+                }
+            });
+
+            // Additional animation for sections
+            const sections = containerRef.current.querySelectorAll('.section');
+            sections.forEach((section, index) => {
+                gsap.fromTo(
+                    section,
+                    {
+                        opacity: 0,
+                        y: 60
+                    },
+                    {
+                        opacity: 1,
+                        y: 0,
+                        duration: 1,
+                        ease: 'power2.out',
+                        scrollTrigger: {
+                            trigger: section,
+                            start: 'top 85%',
+                            end: 'top 40%',
+                            toggleActions: 'play none none reverse',
+                            scrub: 0.8,
+                        }
+                    }
+                );
+            });
+        }
+
+        // Cleanup function
+        return () => {
+            ScrollTrigger.getAll().forEach(trigger => trigger.kill());
+        };
     }, []);
 
     return (
         
-        <div style={styles.container}>
+        <div ref={containerRef} style={styles.container}>
             <style>
                 {`
           @keyframes fadeIn {
