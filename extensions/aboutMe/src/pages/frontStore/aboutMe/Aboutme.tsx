@@ -39,50 +39,53 @@ export default function AboutMe() {
         if (containerRef.current) {
             // Set initial state - hide entire container
             gsap.set(containerRef.current, {
-                opacity: 0,
-                y: 50
-            });
+        opacity: 0,
+        y: 80 // tăng để phần tử trượt rõ hơn
+    });
 
-            // Animate entire page on scroll
-            gsap.to(containerRef.current, {
+    // 2️⃣ Hiệu ứng tổng thể của toàn trang
+    gsap.to(containerRef.current, {
+        opacity: 1,
+        y: 0,
+        duration: 1.5, // mượt hơn
+        ease: 'power4.out', // easing rõ ràng hơn
+        scrollTrigger: {
+            trigger: containerRef.current,
+            start: 'top 90%', // kích hoạt sớm hơn
+            end: 'bottom 70%',
+            toggleActions: 'play none none reverse',
+            scrub: 1.2, // tạo cảm giác gắn liền khi cuộn
+            // markers: true,
+        },
+    });
+
+    // 3️⃣ Hiệu ứng riêng cho từng section
+    const sections = containerRef.current.querySelectorAll('.section');
+    sections.forEach((section, index) => {
+        gsap.fromTo(
+            section,
+            {
+                opacity: 0,
+                y: 120, // tăng để thấy rõ chuyển động
+                scale: 0.95, // thêm chút scale nhỏ cho cảm giác “zoom in”
+            },
+            {
                 opacity: 1,
                 y: 0,
-                duration: 1.2,
+                scale: 1,
+                duration: 1.8,
                 ease: 'power3.out',
+                delay: index * 0.15, // tạo hiệu ứng nối tiếp tự nhiên
                 scrollTrigger: {
-                    trigger: containerRef.current,
-                    start: 'top 80%',
-                    end: 'top 20%',
-                    toggleActions: 'play none none reverse',
-                    scrub: 1,
-                    // markers: true, // Uncomment for debugging
-                }
-            });
-
-            // Additional animation for sections
-            const sections = containerRef.current.querySelectorAll('.section');
-            sections.forEach((section, index) => {
-                gsap.fromTo(
-                    section,
-                    {
-                        opacity: 0,
-                        y: 100
-                    },
-                    {
-                        opacity: 1,
-                        y: 0,
-                        duration: 1.5,
-                        ease: 'power2.out',
-                        scrollTrigger: {
-                            trigger: section,
-                            start: 'top 85%',
-                            end: 'top 40%',
-                            toggleActions: 'play reverse play reverse',
-                            scrub: 0.8,
-                        }
-                    }
-                );
-            });
+                    trigger: section,
+                    start: 'top 85%',
+                    end: 'top 40%',
+                    toggleActions: 'play reverse play reverse',
+                    scrub: 1, // liên kết chuyển động với tốc độ cuộn
+                },
+            }
+        );
+    });
 
             // TextPlugin animations for hero section
             // Animation for name (Minh Lê)
