@@ -146,6 +146,28 @@ sections.forEach((section, index) => {
                     });
                 }
             }
+
+            // Skill cards animation - sau khi section animation hoàn thành
+            const skillCards = containerRef.current.querySelectorAll('.skill-card');
+            if (skillCards.length > 0) {
+                skillCards.forEach((card, index) => {
+                    gsap.set(card, { opacity: 0, y: 30, scale: 0.9 });
+                    
+                    gsap.to(card, {
+                        opacity: 1,
+                        y: 0,
+                        scale: 1,
+                        duration: 0.6,
+                        delay: index * 0.08, // stagger effect
+                        ease: 'back.out(1.2)',
+                        scrollTrigger: {
+                            trigger: card,
+                            start: 'top 90%',
+                            toggleActions: 'play none none none',
+                        },
+                    });
+                });
+            }
         }
 
         // Cleanup function
@@ -252,7 +274,7 @@ sections.forEach((section, index) => {
             {/* Skills Section */}
             <section style={styles.section} className="section">
                 <h2 style={styles.sectionTitle}>Skills</h2>
-                <div style={styles.skillsGrid}>
+                <div style={styles.skillsGrid} className="skillsGrid">
                     {[
                         'React', 'Node.js', 'TypeScript', 'Python',
                         'PostgreSQL', 'MongoDB', 'Docker', 'Git',
