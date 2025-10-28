@@ -66,18 +66,18 @@ export default function AboutMe() {
                     section,
                     {
                         opacity: 0,
-                        y: 60
+                        y: 100
                     },
                     {
                         opacity: 1,
                         y: 0,
-                        duration: 1,
+                        duration: 1.5,
                         ease: 'power2.out',
                         scrollTrigger: {
                             trigger: section,
                             start: 'top 85%',
                             end: 'top 40%',
-                            toggleActions: 'play none none reverse',
+                            toggleActions: 'play reverse play reverse',
                             scrub: 0.8,
                         }
                     }
