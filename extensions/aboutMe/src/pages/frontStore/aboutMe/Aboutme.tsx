@@ -15,6 +15,7 @@ export default function AboutMe() {
     const bioRef = useRef<HTMLParagraphElement>(null);
 
     useEffect(() => {
+        
         // Initialize Anime.js animation for header text
         const { chars } = splitText('#animation-test h2', { words: false, chars: true });
 
@@ -60,32 +61,42 @@ export default function AboutMe() {
     });
 
     // 3️⃣ Hiệu ứng riêng cho từng section
-    const sections = containerRef.current.querySelectorAll('.section');
-    sections.forEach((section, index) => {
-        gsap.fromTo(
-            section,
-            {
-                opacity: 0,
-                y: 120, // tăng để thấy rõ chuyển động
-                scale: 0.95, // thêm chút scale nhỏ cho cảm giác “zoom in”
+    // 3️⃣ Hiệu ứng xen kẽ trái - phải - giữa cho từng section
+const sections = containerRef.current.querySelectorAll('.section');
+sections.forEach((section, index) => {
+    // Xác định hướng hiệu ứng dựa vào vị trí index
+    let fromX = 0;
+    if (index % 3 === 0) fromX = -150; // Trượt từ trái
+    else if (index % 3 === 1) fromX = 150; // Trượt từ phải
+    else fromX = 0; // Trượt từ dưới (giữa)
+
+    gsap.fromTo(
+        section,
+        {
+            opacity: 0,
+            x: fromX,
+            y: fromX === 0 ? 100 : 0,
+            scale: 0.9,
+        },
+        {
+            opacity: 1,
+            x: 0,
+            y: 0,
+            scale: 1,
+            duration: 1.8,
+            ease: 'power4.out',
+            delay: index * 0.15,
+            scrollTrigger: {
+                trigger: section,
+                start: 'top 85%',
+                end: 'top 40%',
+                toggleActions: 'play reverse play reverse',
+                scrub: 1.2,
             },
-            {
-                opacity: 1,
-                y: 0,
-                scale: 1,
-                duration: 1.8,
-                ease: 'power3.out',
-                delay: index * 0.15, // tạo hiệu ứng nối tiếp tự nhiên
-                scrollTrigger: {
-                    trigger: section,
-                    start: 'top 85%',
-                    end: 'top 40%',
-                    toggleActions: 'play reverse play reverse',
-                    scrub: 1, // liên kết chuyển động với tốc độ cuộn
-                },
-            }
-        );
-    });
+        }
+    );
+});
+
 
             // TextPlugin animations for hero section
             // Animation for name (Minh Lê)
