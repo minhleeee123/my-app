@@ -38,7 +38,7 @@ export default function FreeShippingMessage() {
     // Floating nhẹ
     imgs.forEach((img, i) => {
       gsap.to(img, {
-        y: '+=6',
+        y: '+=20',
         repeat: -1,
         yoyo: true,
         ease: 'sine.inOut',
